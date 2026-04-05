@@ -100,8 +100,8 @@ const main = async () => {
 
   /* Players */
   const players = matchData["match_players"];
-  var blueSide: Player[] = [];
-  var redSide: Player[] = [];
+  var blueSide: Player[] = []; // 1
+  var redSide: Player[] = []; // 0
 
   var mvpID = matchData["mvp_uid"];
   var svpID = matchData["svp_uid"];
