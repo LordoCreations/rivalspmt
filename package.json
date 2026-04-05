@@ -1,0 +1,21 @@
+{
+  "name": "rivalspmt",
+  "version": "1.0.0",
+  "description": "Marvel Rivals esports PMT markdown generator",
+  "license": "ISC",
+  "author": "lordocreations",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "VERBOSE=true node src/index.ts",
+    "test": "VERBOSE=false node src/index.ts"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.9",
+    "typescript": "^6.0.2",
+    "undici-types": "^7.18.2"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2"
+  }
+}
