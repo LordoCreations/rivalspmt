@@ -1,9 +1,9 @@
-Generates Match PMT from a template markdown file
+Generates Map PMT from a template markdown file
 
 # Installation
 Requires `npm` and `node` (can download from https://nodejs.org/en/download)
 
-1. Download and Enter Directory in a shell
+1. Download and Enter Directory in a terminal
 2. Run `npm install`
 
 # Instructions for use
@@ -12,3 +12,5 @@ Requires `npm` and `node` (can download from https://nodejs.org/en/download)
 3. Lazy name filling --> Y = will use player's in game names; N = will prompt user for names
 4. Confirm which team is blue side (colour is blue in game)
 5. Copy from terminal or `output/output.md`
+
+markdown can be pasted via "Markdown Mode"
