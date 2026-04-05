@@ -14,7 +14,7 @@ Duration: **{{duration}}**
 
 ^(*Bans are for the opposing team only*)
 
-|      {{blue}}     |        Hero       |       K/D/A        |       Finals       |   vs   |       Finals       |        K/D/A       |        Hero       |      {{red}}      |
+|      {{blue}}     |        Hero       |        KDA         |       Finals       |   vs   |       Finals       |         KDA        |        Hero       |      {{red}}      |
 | :---------------- | :---------------- | :----------------: | :----------------: | :----: | :----------------: | :----------------: | ----------------: | ----------------: |
 | {{bside.[0].name}} | {{bside.[0].heroSum}} | {{bside.[0].k}}/{{bside.[0].d}}/{{bside.[0].a}} | {{bside.[0].last_kill}} |        | {{rside.[0].last_kill}} | {{rside.[0].k}}/{{rside.[0].d}}/{{rside.[0].a}} | {{rside.[0].heroSum}} | {{rside.[0].name}} |
 | {{bside.[1].name}} | {{bside.[1].heroSum}} | {{bside.[1].k}}/{{bside.[1].d}}/{{bside.[1].a}} | {{bside.[1].last_kill}} |        | {{rside.[1].last_kill}} | {{rside.[1].k}}/{{rside.[1].d}}/{{rside.[1].a}} | {{rside.[1].heroSum}} | {{rside.[1].name}} |
