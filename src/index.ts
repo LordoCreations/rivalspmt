@@ -3,10 +3,11 @@ import { URLSearchParams } from "node:url";
 import Handlebars from "handlebars";
 import fs from "fs";
 
-import { comparePlayersForScoreboard, PlayedHero, type Player } from "./utils/player.ts";
+import { cleanPlayerName, comparePlayersForScoreboard, PlayedHero, type Player } from "./utils/player.ts";
 import { idToMap, type Map } from "./utils/maps.ts";
 
 const isVerbose = process.env.VERBOSE === 'true';
+const cleanNames = process.env.CLEAN === 'true';
 
 // Read Markdown content
 const matchTemplateSource = fs.readFileSync(
@@ -116,13 +117,15 @@ const main = async () => {
 
     pheroes.sort(PlayedHero.compare);
 
+    let name = cleanNames ? cleanPlayerName(p["nick_name"]) : p["nick_name"];
+
     let player: Player = {
       uid: p["player_uid"],
       name: lazy
-        ? p["nick_name"]
+        ? name
         : await ask(
-            `What is ${p["nick_name"]}'s IGN? (${p["nick_name"]}) `,
-            p["nick_name"],
+            `What is ${p["nick_name"]}'s IGN? (${name}) `,
+            name,
           ),
       heroes: pheroes,
       heroSum: PlayedHero.calcHeroSum(pheroes, p["play_time"]),

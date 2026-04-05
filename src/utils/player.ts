@@ -56,6 +56,10 @@ export interface Player {
   last_kill: number;
 }
 
+export function cleanPlayerName(name: string): string {
+  return name.replace(/(?<!\.)[.\s]$/, "");
+}
+
 export function comparePlayersForScoreboard(a: Player, b: Player): number {
   if (a.heroes[0].role != b.heroes[0].role) return a.heroes[0].role - b.heroes[0].role
   else return a.heroes[0].name.localeCompare(b.heroes[0].name)
