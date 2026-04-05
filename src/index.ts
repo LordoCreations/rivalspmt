@@ -77,12 +77,7 @@ const main = async () => {
 
   /* Side */
   const teamInfo = JSON.parse(matchData["dynamic_fields"]["league_round_info"]);
-  const side =
-    (
-      await ask(`Is ${teamInfo["1"]["club_team_mini_name"]} blue side? Y/N (Y)  `)
-    ).toLowerCase() == "n"
-      ? false
-      : true;
+  const side = teamInfo["real_defense"] == 1 ? true : false;
 
   const blue = side
     ? teamInfo["1"]["club_team_mini_name"]
@@ -138,7 +133,7 @@ const main = async () => {
     };
 
     if (player.uid == mvpID) mvp = player.name;
-    if ((player.uid = svpID)) svp = player.name;
+    if (player.uid == svpID) svp = player.name;
 
     if (p["camp"] == 0) redSide.push(player);
     else blueSide.push(player);
@@ -170,9 +165,12 @@ const main = async () => {
   const output = matchTemplate(data)
   if (isVerbose) console.log(`<COPY FROM HERE>\n`+output)
   
-  await fs.writeFile("output/output.md", output, (err) => {
-    if (err) console.error(err);
-  });
+  try {
+    fs.mkdirSync("output", { recursive: true });
+    fs.writeFileSync("output/output.md", matchTemplate(data));
+  } catch (err) {
+    console.error("Error writing file:", err);
+  }
 
   rl.close();
   return;
