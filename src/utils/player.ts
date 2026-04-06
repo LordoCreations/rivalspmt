@@ -57,7 +57,7 @@ export interface Player {
 }
 
 export function cleanPlayerName(name: string): string {
-  return name.replace(/(?<!\.)[.\s]$/, "");
+  return name.replace(/(?<!\.)\.$/, "").trim();
 }
 
 export function comparePlayersForScoreboard(a: Player, b: Player): number {
