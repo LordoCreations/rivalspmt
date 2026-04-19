@@ -1,4 +1,4 @@
-import heroJSON from "./heroes.json" with { type: "json" };
+import heroJSON from "../../data/heroes.json" with { type: "json" };
 
 const ensure = <T>(value: T | null | undefined, message: string): T => {
   if (value === null || value === undefined) {

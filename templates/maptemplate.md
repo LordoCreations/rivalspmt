@@ -1,7 +1,7 @@
 ***
 
 ## MAP {{mapNumber}} - {{mode}}: {{map}}
-**{{blue}} {{bluescore}}-{{redscore}} {{red}}**
+**{{fullBlue}} {{bluescore}}-{{redscore}} {{fullRed}}**
 
 Replay ID: {{replayID}}\
 MVP: **{{mvp}}** | SVP:  **{{svp}}**\
