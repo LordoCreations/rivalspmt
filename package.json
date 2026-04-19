@@ -17,8 +17,9 @@
   "scripts": {
     "build": "cross-env VERBOSE=true CLEAN=true node src/index.ts",
     "test": "cross-env VERBOSE=false CLEAN=false node src/index.ts",
-    "dev":  "cross-env VERBOSE=false CLEAN=true node src/index.ts",
-    "series": "cross-env VERBOSE=false CLEAN=true node src/series.ts"
+    "match":  "cross-env VERBOSE=false CLEAN=true node src/index.ts",
+    "series": "cross-env VERBOSE=false CLEAN=true HEADER=false node src/series.ts",
+    "complete": "cross-env VERBOSE=false CLEAN=true HEADER=true node src/series.ts"
   },
   "dependencies": {
     "handlebars": "^4.7.9",

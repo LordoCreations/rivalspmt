@@ -45,6 +45,8 @@ const main = async () => {
 
   if (isVerbose) {
     console.log(`<COPY FROM HERE>\n${renderedMap.output}`);
+  } else {
+    console.log(`Copy output from output/output.md`);
   }
   
   try {

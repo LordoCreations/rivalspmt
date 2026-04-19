@@ -8,6 +8,7 @@ import { loadTeamAliases, saveTeamAliases } from "./utils/teamAliases.ts";
 
 const isVerbose = process.env.VERBOSE === "true";
 const cleanNames = process.env.CLEAN === "true";
+const includeHeader = process.env.HEADER === "true";
 
 const headerTemplateSource = fs.readFileSync(
   "templates/headertemplate.md",
@@ -114,18 +115,25 @@ const main = async () => {
   savePlayerAliases(playerAliases);
   saveTeamAliases(teamAliases);
 
-  const header = headerTemplate({
-    fullTeam1Name: seriesTeams?.team1FullName ?? "Team 1",
-    fullTeam2Name: seriesTeams?.team2FullName ?? "Team 2",
-    team1Score: seriesWins["1"],
-    team2Score: seriesWins["2"],
-    format: bestOf,
-  });
-
   const mapsOutput = mapOutputs.join("\n\n");
-  const output = mapsOutput === "" ? header : `${header}\n\n${mapsOutput}`;
+  let output = mapsOutput;
+
+  if (includeHeader) {
+    const header = headerTemplate({
+      fullTeam1Name: seriesTeams?.team1FullName ?? "Team 1",
+      fullTeam2Name: seriesTeams?.team2FullName ?? "Team 2",
+      team1Score: seriesWins["1"],
+      team2Score: seriesWins["2"],
+      format: bestOf,
+    });
+
+    output = mapsOutput === "" ? header : `${header}\n\n${mapsOutput}`;
+  }
+
   if (isVerbose) {
-    console.log(`<COPY FROM ${isVerbose ? "HERE" : "output.md"}>\n${output}`);
+    console.log(`<COPY FROM HERE>\n${output}`);
+  } else {
+    console.log(`Copy output from output/output.md`);
   }
 
   try {
