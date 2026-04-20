@@ -6,6 +6,24 @@ Requires `npm` and `node` (can download from https://nodejs.org/en/download)
 1. Download and Enter Directory in a terminal
 2. Run `npm install`
 
+## Cloud data sync
+- On startup, `npm run build`, `npm run match`, `npm run series`, and `npm run complete` now try to sync `data/heroes.json`, `data/players.json`, and `data/teams.json` from gist `5c84643574b1016cf8dd70eb7c309fc8` using Octokit.
+- Pull sync is additive/non-destructive: local-only entries are kept, and cloud data is merged in.
+- If cloud sync fails, local files are used as fallback.
+- If any local JSON file is missing or invalid, it is replaced with empty JSON (`{}`).
+- You can manually pull cloud data at any time with `npm run sync:pull`.
+
+### Push local data back to gist (only if you have permissions)
+1. Create `.env` in the project root (you can copy `.env.example`).
+2. Add values:
+	- `GIST_EDIT_KEY=...` (GitHub fine-grained or classic token that can edit gists)
+	- Optional: `GITHUB_GIST_ID=5c84643574b1016cf8dd70eb7c309fc8` (only needed if you want a different gist)
+3. Run `npm run sync:push`.
+
+Token scope notes:
+- For classic personal access tokens, include `gist` scope.
+- For fine-grained tokens, grant gist write access for your account.
+
 # Instructions for use
 1. Run `npm run build`
 2. Choose lazy naming in console

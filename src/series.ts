@@ -3,6 +3,7 @@ import fs from "node:fs";
 import Handlebars from "handlebars";
 
 import { renderMapFromReplay } from "./utils/matchOutput.ts";
+import { syncDataFromCloudOnStart } from "./utils/cloudDataSync.ts";
 import { loadPlayerAliases, savePlayerAliases } from "./utils/playerAliases.ts";
 import { loadTeamAliases, saveTeamAliases } from "./utils/teamAliases.ts";
 
@@ -53,6 +54,8 @@ function hasSeriesWinner(seriesWins: Record<string, number>, winsNeeded: number)
 }
 
 const main = async () => {
+  await syncDataFromCloudOnStart();
+
   const lazyNaming = await askForLazyNaming();
   const bestOf = await askForBestOf();
   const winsNeeded = Math.floor(bestOf / 2) + 1;

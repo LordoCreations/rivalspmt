@@ -2,6 +2,7 @@ import * as readline from "node:readline";
 import fs from "node:fs";
 
 import { renderMapFromReplay } from "./utils/matchOutput.ts";
+import { syncDataFromCloudOnStart } from "./utils/cloudDataSync.ts";
 import { loadPlayerAliases, savePlayerAliases } from "./utils/playerAliases.ts";
 import { loadTeamAliases, saveTeamAliases } from "./utils/teamAliases.ts";
 
@@ -27,6 +28,8 @@ async function askForLazyNaming(): Promise<boolean> {
 }
 
 const main = async () => {
+  await syncDataFromCloudOnStart();
+
   const lazyNaming = await askForLazyNaming();
   const replayID = await ask(`Enter Match Replay ID:  `);
   const playerAliases = loadPlayerAliases();
