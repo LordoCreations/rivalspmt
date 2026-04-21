@@ -1,4 +1,30 @@
-import heroJSON from "./heroes.json" with { type: "json" };
+import fs from "node:fs";
+
+const HEROES_FILE_URL = new URL("../../data/heroes.json", import.meta.url);
+type HeroTuple = [string, number];
+type HeroStore = Record<string, HeroTuple | string>;
+let heroDataCache: HeroStore | null = null;
+
+function loadHeroData(): HeroStore {
+  if (heroDataCache !== null) {
+    return heroDataCache;
+  }
+
+  try {
+    const raw = fs.readFileSync(HEROES_FILE_URL, "utf-8");
+    const parsed = JSON.parse(raw) as unknown;
+
+    if (typeof parsed === "object" && parsed !== null && !Array.isArray(parsed)) {
+      heroDataCache = parsed as HeroStore;
+      return heroDataCache;
+    }
+  } catch {
+    // Keep empty fallback when heroes.json does not exist or is invalid.
+  }
+
+  heroDataCache = {};
+  return heroDataCache;
+}
 
 const ensure = <T>(value: T | null | undefined, message: string): T => {
   if (value === null || value === undefined) {
@@ -25,8 +51,9 @@ export class PlayedHero {
   }
 
   static getHeroDataFromID(id: number): [string, number] {
+    const heroJSON = loadHeroData();
     const heroStr = ensure(
-      heroJSON[String(id) as keyof typeof heroJSON],
+      heroJSON[String(id)],
       `Hero ${id} not found`
     );
     const hero = typeof heroStr === 'string' ? JSON.parse(heroStr) : heroStr;

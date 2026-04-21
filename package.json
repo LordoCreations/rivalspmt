@@ -17,10 +17,15 @@
   "scripts": {
     "build": "cross-env VERBOSE=true CLEAN=true node src/index.ts",
     "test": "cross-env VERBOSE=false CLEAN=false node src/index.ts",
-    "dev":  "cross-env VERBOSE=false CLEAN=true node src/index.ts"
+    "match":  "cross-env VERBOSE=false CLEAN=true node src/index.ts",
+    "series": "cross-env VERBOSE=false CLEAN=true HEADER=false node src/series.ts",
+    "complete": "cross-env VERBOSE=false CLEAN=true HEADER=true node src/series.ts",
+    "sync:pull": "node src/syncDataFromCloud.ts",
+    "sync:push": "node --env-file=.env src/syncDataToCloud.ts"
   },
   "dependencies": {
     "handlebars": "^4.7.9",
+    "octokit": "^5.0.4",
     "typescript": "^6.0.2",
     "undici-types": "^7.18.2"
   },
