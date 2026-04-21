@@ -25,7 +25,7 @@ Token scope notes:
 - For fine-grained tokens, grant gist write access for your account.
 
 # Instructions for use
-1. Run `npm run build`
+1. Run `npm run match`
 2. Choose lazy naming in console
 3. Enter match replay ID in console
 4. Both modes check aliases from `data/players.json` and `data/teams.json` first
