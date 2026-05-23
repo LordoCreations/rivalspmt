@@ -1,6 +1,9 @@
 .env
 /node_modules/
 /output/
+<<<<<<< HEAD
 
+=======
+>>>>>>> d5ed86b (update gitignore)
 /data/players.json
 /data/teams.json
