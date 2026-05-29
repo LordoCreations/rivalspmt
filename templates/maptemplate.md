@@ -7,7 +7,7 @@ Replay ID: {{replayID}}\
 MVP: **{{mvp}}** | SVP:  **{{svp}}**\
 Duration: **{{duration}}**
 
-|              |    Ban    |  Protect  |    Ban    |  Protect  |    Ban    |    Ban    |  Protect  |    Ban    |  Protect   |    Ban     |
+|    &nbsp;    |    Ban    |  Protect  |    Ban    |  Protect  |    Ban    |    Ban    |  Protect  |    Ban    |  Protect   |    Ban     |
 |:------------ |:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:---------:|:----------:|:----------:|
 | **{{blue}}** | {{bp.[0]}} |            | {{bp.[3]}} | {{bp.[4]}} |            | {{bp.[6]}} | {{bp.[8]}} |            |             | {{bp.[11]}} |
 | **{{red}}**  | {{bp.[1]}} | {{bp.[2]}} |            |            | {{bp.[5]}} | {{bp.[7]}} |            | {{bp.[9]}} | {{bp.[10]}} |             |
