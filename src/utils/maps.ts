@@ -105,6 +105,12 @@ export const MAPS: Map[] = [
     mapIds: [1418],
     gameMode: "Convoy",
   },
+  {
+    id: "lower-manhattan",
+    name: "Lower Manhattan",
+    mapIds: [1421],
+    gameMode: "Convoy",
+  },
 ];
 
 export function idToMap(id: number): Map {
