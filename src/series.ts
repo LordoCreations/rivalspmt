@@ -165,8 +165,8 @@ const main = async () => {
     });
 
     output = mapsOutput === ""
-      ? `${summaryOutput}\n\n${header}`
-      : `${summaryOutput}\n\n${header}\n\n${mapsOutput}`;
+      ? header
+      : `${header}\n\n${summaryOutput}\n\n${mapsOutput}`;
   }
 
   if (isVerbose) {
