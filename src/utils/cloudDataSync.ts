@@ -19,6 +19,7 @@ const EMPTY_JSON_CONTENT = "{}\n";
 
 const DATA_FILES: DataFileConfig[] = [
   { gistFilename: "heroes.json", localPath: "data/heroes.json" },
+  { gistFilename: "maps.json", localPath: "data/maps.json" },
   { gistFilename: "players.json", localPath: "data/players.json" },
   { gistFilename: "teams.json", localPath: "data/teams.json" },
 ];

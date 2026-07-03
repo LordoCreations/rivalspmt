@@ -23,7 +23,7 @@ const ask = (question: string, blank: string = ""): Promise<string> => {
 };
 
 async function askForLazyNaming(): Promise<boolean> {
-  const raw = (await ask("Lazy name filling? Y/N (Y)  ", "Y")).trim().toLowerCase();
+  const raw = (await ask("Lazy name filling? Y/N (N)  ", "N")).trim().toLowerCase();
   return raw !== "n";
 }
 

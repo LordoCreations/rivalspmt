@@ -42,8 +42,11 @@ export interface RenderedMap {
   output: string;
   blue: string;
   red: string;
+  fullBlue: string;
+  fullRed: string;
   blueScore: number;
   redScore: number;
+  mapName: string;
   winner: string | null;
   winningTeamId: TeamId | null;
   isDraw: boolean;
@@ -91,7 +94,7 @@ async function resolvePlayerName(
   }
 
   if (lazyNaming) {
-    return addAliasForPlayer(aliasFallback, matchNameRaw, playerAliases);
+    return aliasFallback;
   }
 
   const inputName = await ask(
@@ -316,8 +319,11 @@ export async function renderMapFromReplay(options: RenderMapOptions): Promise<Re
     output,
     blue,
     red,
+    fullBlue,
+    fullRed,
     blueScore,
     redScore,
+    mapName: map.name,
     winner: isDraw ? null : blueScore > redScore ? blue : red,
     winningTeamId,
     isDraw,

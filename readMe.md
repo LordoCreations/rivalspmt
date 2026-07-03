@@ -7,7 +7,7 @@ Requires `npm` and `node` (can download from https://nodejs.org/en/download)
 2. Run `npm install`
 
 ## Cloud data sync
-- On startup, `npm run build`, `npm run match`, `npm run series`, and `npm run complete` now try to sync `data/heroes.json`, `data/players.json`, and `data/teams.json` from gist `5c84643574b1016cf8dd70eb7c309fc8` using Octokit.
+- On startup, `npm run build`, `npm run match`, `npm run series`, and `npm run complete` now try to sync `data/heroes.json`, `data/maps.json`, `data/players.json`, and `data/teams.json` from gist `5c84643574b1016cf8dd70eb7c309fc8` using Octokit.
 - Pull sync is additive/non-destructive: local-only entries are kept, and cloud data is merged in.
 - If cloud sync fails, local files are used as fallback.
 - If any local JSON file is missing or invalid, it is replaced with empty JSON (`{}`).

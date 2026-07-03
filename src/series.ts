@@ -31,7 +31,7 @@ const ask = (question: string, blank: string = ""): Promise<string> => {
 };
 
 async function askForLazyNaming(): Promise<boolean> {
-  const raw = (await ask("Lazy name filling? Y/N (Y)  ", "Y")).trim().toLowerCase();
+  const raw = (await ask("Lazy name filling? Y/N (N)  ", "N")).trim().toLowerCase();
   return raw !== "n";
 }
 
@@ -53,6 +53,23 @@ function hasSeriesWinner(seriesWins: Record<string, number>, winsNeeded: number)
   return highestScore >= winsNeeded;
 }
 
+function formatSeriesScoreSummary(
+  renderedMaps: Array<{
+    blueScore: number;
+    fullBlue: string;
+    fullRed: string;
+    mapName: string;
+    redScore: number;
+  }>,
+): string {
+  const mapLines = renderedMaps.map(
+    (renderedMap) =>
+      `- **${renderedMap.mapName.toUpperCase()}**: ${renderedMap.fullBlue} **${renderedMap.blueScore}**-**${renderedMap.redScore}** ${renderedMap.fullRed}`,
+  );
+
+  return mapLines.join("\n");
+}
+
 const main = async () => {
   await syncDataFromCloudOnStart();
 
@@ -64,6 +81,13 @@ const main = async () => {
   const teamAliases = loadTeamAliases();
   const seriesWins: Record<"1" | "2", number> = { "1": 0, "2": 0 };
   const mapOutputs: string[] = [];
+  const renderedMaps: Array<{
+    blueScore: number;
+    fullBlue: string;
+    fullRed: string;
+    mapName: string;
+    redScore: number;
+  }> = [];
   let seriesTeams: { team1FullName: string; team2FullName: string } | null = null;
 
   let mapNumber = 1;
@@ -98,6 +122,13 @@ const main = async () => {
       }
 
       mapOutputs.push(renderedMap.output);
+      renderedMaps.push({
+        blueScore: renderedMap.blueScore,
+        fullBlue: renderedMap.fullBlue,
+        fullRed: renderedMap.fullRed,
+        mapName: renderedMap.mapName,
+        redScore: renderedMap.redScore,
+      });
 
       if (renderedMap.isDraw) {
         console.log(`Map ${mapNumber} was a draw. Enter another replay ID for Map ${mapNumber}.`);
@@ -119,7 +150,10 @@ const main = async () => {
   saveTeamAliases(teamAliases);
 
   const mapsOutput = mapOutputs.join("\n\n");
-  let output = mapsOutput;
+  const summaryOutput = renderedMaps.length > 0
+    ? formatSeriesScoreSummary(renderedMaps)
+    : "";
+  let output = mapsOutput === "" ? summaryOutput : `${summaryOutput}\n\n${mapsOutput}`;
 
   if (includeHeader) {
     const header = headerTemplate({
@@ -130,7 +164,9 @@ const main = async () => {
       format: bestOf,
     });
 
-    output = mapsOutput === "" ? header : `${header}\n\n${mapsOutput}`;
+    output = mapsOutput === ""
+      ? `${summaryOutput}\n\n${header}`
+      : `${summaryOutput}\n\n${header}\n\n${mapsOutput}`;
   }
 
   if (isVerbose) {
