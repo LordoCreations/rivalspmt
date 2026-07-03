@@ -38,13 +38,14 @@ Default alias behavior is just the canonical team name.
 
 ## Series mode
 1. Run `npm run series` for maps-only output, or `npm run complete` to include the series header markdown
-2. Choose lazy naming in console
+2. Choose lazy naming in console; the default is `N`
 3. Enter the series length as best of # (for example: `5`)
-4. Enter replay IDs in map order
-5. If lazy naming is off (`n` or `N`), unknown player/team aliases will prompt for canonical names and then save them
+4. Enter replay IDs in map order, separated by linebreaks or spaces, or paste a block of replay IDs
+5. The script reads each replay ID individually, like repeated `cin` input, until the series ends
 6. If a map is a draw (equal score), enter another replay ID for the same map number
-7. Leave a replay ID as `esc` stop early and skip remaining maps
-8. `npm run complete` writes a filled header (from `templates/headertemplate.md`) followed by all maps in order to `output/output.md`
-9. `npm run series` writes map sections only to `output/output.md`
+7. Type `esc` to stop early and skip remaining maps; empty lines are ignored
+8. After a batch is consumed, the script prints a loaded status like `(Loaded Map 1)` or `(Loaded Maps 1 to 5)`
+9. `npm run complete` writes the filled header from `templates/headertemplate.md`, then the map summary, then all maps in order to `output/output.md`
+10. `npm run series` writes the map summary and map sections only to `output/output.md`
 
 markdown can be pasted via "Markdown Mode"

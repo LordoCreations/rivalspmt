@@ -22,13 +22,74 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const ask = (question: string, blank: string = ""): Promise<string> => {
+const queuedLines: string[] = [];
+const queuedReplayTokens: string[] = [];
+const waitingResolvers: Array<(line: string) => void> = [];
+
+rl.on("line", (line: string) => {
+  const resolver = waitingResolvers.shift();
+  if (resolver !== undefined) {
+    resolver(line);
+    return;
+  }
+
+  queuedLines.push(line);
+});
+
+function readLine(): Promise<string> {
+  const queuedLine = queuedLines.shift();
+  if (queuedLine !== undefined) {
+    return Promise.resolve(queuedLine);
+  }
+
   return new Promise((resolve) => {
-    rl.question(question, (answer: string) => {
-      resolve(answer === "" ? blank : answer);
-    });
+    waitingResolvers.push(resolve);
   });
+}
+
+function queueReplayTokensFromLine(line: string): void {
+  const tokens = line.trim().split(/\s+/).filter((token) => token.length > 0);
+
+  for (const token of tokens) {
+    queuedReplayTokens.push(token);
+  }
+}
+
+async function readReplayID(): Promise<string | null> {
+  while (queuedReplayTokens.length === 0) {
+    const line = await readLine();
+    queueReplayTokensFromLine(line);
+  }
+
+  const replayID = queuedReplayTokens.shift();
+  if (replayID === undefined) {
+    return null;
+  }
+
+  if (replayID.toLowerCase() === "esc") {
+    return null;
+  }
+
+  return replayID;
+}
+
+const ask = async (
+  question: string,
+  blank: string = "",
+  newline: boolean = false,
+): Promise<string> => {
+  process.stdout.write(newline ? `${question}\n` : question);
+  const answer = await readLine();
+  return answer === "" ? blank : answer;
 };
+
+function printLoadedMaps(mapStart: number, mapEnd: number): void {
+  if (mapEnd >= mapStart) {
+    const label = mapStart === mapEnd ? "Map" : "Maps";
+    const range = mapStart === mapEnd ? `${mapStart}` : `${mapStart} to ${mapEnd}`;
+    console.log(`> (Loaded ${label} ${range}) <`);
+  }
+}
 
 async function askForLazyNaming(): Promise<boolean> {
   const raw = (await ask("Lazy name filling? Y/N (N)  ", "N")).trim().toLowerCase();
@@ -62,12 +123,22 @@ function formatSeriesScoreSummary(
     redScore: number;
   }>,
 ): string {
-  const mapLines = renderedMaps.map(
-    (renderedMap) =>
-      `- **${renderedMap.mapName.toUpperCase()}**: ${renderedMap.fullBlue} **${renderedMap.blueScore}**-**${renderedMap.redScore}** ${renderedMap.fullRed}`,
-  );
+  const rows = renderedMaps.map((renderedMap) => {
+    const blueTeam = renderedMap.blueScore > renderedMap.redScore
+      ? `***${renderedMap.fullBlue}***`
+      : renderedMap.fullBlue;
+    const redTeam = renderedMap.redScore > renderedMap.blueScore
+      ? `***${renderedMap.fullRed}***`
+      : renderedMap.fullRed;
 
-  return mapLines.join("\n");
+    return `| ${renderedMap.mapName.toUpperCase()} | &nbsp; | ${blueTeam} | **${renderedMap.blueScore}**-**${renderedMap.redScore}** | ${redTeam} |`;
+  });
+
+  return [
+    `| Map | &nbsp; | &nbsp; | Score | &nbsp; |`,
+    `| :--- | :---: | :--- | :---: | ---: |`,
+    ...rows,
+  ].join("\n");
 }
 
 const main = async () => {
@@ -91,16 +162,16 @@ const main = async () => {
   let seriesTeams: { team1FullName: string; team2FullName: string } | null = null;
 
   let mapNumber = 1;
+  let batchMapStart = mapNumber;
+
+  console.log("Enter replay IDs separated by linebreak or space. Type 'esc' to stop.");
 
   while (!hasSeriesWinner(seriesWins, winsNeeded)) {
-    const replayID = await ask(`Enter Replay ID for Map ${mapNumber} (type esc to exit):  `);
+    const replayID = await readReplayID();
 
-    if (replayID.trim() === "" || replayID.trim().toLowerCase() === "esc") {
-      console.log("No replay ID entered. Ending input and writing current output.");
+    if (replayID === null) {
+      printLoadedMaps(batchMapStart, mapNumber - 1);
       break;
-    } else if (replayID.trim() === "") {
-      console.log("Invalid replay ID. Please try again.");
-      continue;
     }
 
     try {
@@ -140,6 +211,11 @@ const main = async () => {
       }
 
       mapNumber += 1;
+
+      if (queuedReplayTokens.length === 0) {
+        printLoadedMaps(batchMapStart, mapNumber - 1);
+        batchMapStart = mapNumber;
+      }
     } catch (err) {
       console.error(err);
       console.log(`Unable to process replay ID ${replayID}. Please try again for Map ${mapNumber}.`);
