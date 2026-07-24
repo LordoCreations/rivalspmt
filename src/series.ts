@@ -135,7 +135,7 @@ function formatSeriesScoreSummary(
   });
 
   return [
-    `| Map | &nbsp; | &nbsp; | Score | &nbsp; |`,
+    `| Map | &nbsp; | Blue Side | Score | Red Side |`,
     `| :--- | :---: | :--- | :---: | ---: |`,
     ...rows,
   ].join("\n");
