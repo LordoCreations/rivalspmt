@@ -191,5 +191,12 @@
       1421
     ],
     "gameMode": "Convoy"
+  },
+  "thebes": {
+    "name": "Thebes",
+    "mapIds": [
+      1420
+    ],
+    "gameMode": "Convoy"
   }
 }
