@@ -199,5 +199,12 @@
       1434
     ],
     "gameMode": "Convoy"
+  },
+  "godquarry": {
+    "name": "God Quarry",
+    "mapIds": [
+      1440
+    ],
+    "gameMode": "Domination"
   }
 }
